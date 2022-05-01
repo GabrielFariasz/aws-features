@@ -1,11 +1,13 @@
 import { NestFactory } from '@nestjs/core'
-import { HealthCheckModule } from './health-check/health-check.module'
+import { AppModule } from './app.module'
+
+
 import env from './configs/env'
 
 
 
 async function bootstrap() {
-  const app = await NestFactory.create(HealthCheckModule)
+  const app = await NestFactory.create(AppModule)
   await app.listen(env.PORT)
 }
 bootstrap()
