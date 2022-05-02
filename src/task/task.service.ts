@@ -16,7 +16,7 @@ export class TaskService {
     const mongoData = new this.taskSchema({
       ...data,
       creationDate: new Date(),
-      status: 'to-do'
+      status: 'To-do'
 
     })
     return await mongoData.save()
@@ -29,6 +29,20 @@ export class TaskService {
 
   async getTasks(): Promise<any> {
     const mongoData = this.taskSchema.find()
+    return mongoData
+  }
+
+  async updateTaskById(idParam: string, bodyData: Task): Promise<any> {
+    const { name, description, creationDate, expirationDate, status } = bodyData
+    const mongoData = this.taskSchema.updateOne({ _id: idParam }, {
+      $set: {
+        name,
+        description,
+        creationDate,
+        expirationDate,
+        status
+      }
+    })
     return mongoData
   }
 
