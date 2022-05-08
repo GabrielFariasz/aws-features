@@ -11,9 +11,11 @@ export class TaskController {
     //
   }
 
-  @Post('/')
-  async createTask(@Body() body: AddTask) {
-    return await this.taskService.createTask(body)
+
+  @Get()
+  @HttpCode(200)
+  async getTasks() {
+    return await this.taskService.getTasks()
   }
 
   @Get('/:id')
@@ -25,10 +27,9 @@ export class TaskController {
     }
   }
 
-  @Get()
-  @HttpCode(200)
-  async getTasks() {
-    return await this.taskService.getTasks()
+  @Post('/')
+  async createTask(@Body() body: AddTask) {
+    return await this.taskService.createTask(body)
   }
 
   @Put('/:id')

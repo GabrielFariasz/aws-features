@@ -13,12 +13,14 @@ export class TaskService {
 
 
   async createTask(data: AddTask): Promise<any> {
+
     const mongoData = new this.taskSchema({
       ...data,
       creationDate: new Date(),
-      status: 'To-do'
+      status: data.status ?? 'to-do'
 
     })
+
     return await mongoData.save()
   }
 
@@ -28,8 +30,7 @@ export class TaskService {
   }
 
   async getTasks(): Promise<any> {
-    const mongoData = this.taskSchema.find()
-    return mongoData
+    return this.taskSchema.find()
   }
 
   async updateTaskById(idParam: string, bodyData: Task): Promise<any> {
