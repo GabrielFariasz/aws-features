@@ -47,4 +47,9 @@ export class TaskService {
     return mongoData
   }
 
+
+  async deleteTaskById(idParam: string) {
+    return await this.taskSchema.deleteOne({ _id: idParam })
+  }
+
 }

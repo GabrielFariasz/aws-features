@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
 import { AddTask, GetTaskParams } from './interfaces/task.interface';
 import { Task } from './interfaces/task.schema';
 import { TaskService } from './task.service';
@@ -22,7 +22,7 @@ export class TaskController {
   async getTaskById(@Param() params: GetTaskParams<string>) {
     try {
       return await this.taskService.getTaskById(params.id)
-    } catch (err) {
+    } catch (err: any) {
       return { error: 'Data not found' }
     }
   }
@@ -36,11 +36,28 @@ export class TaskController {
   async updateTaskById(@Param() params: GetTaskParams<string>, @Body() body: Task, @Res() resp: Response) {
     try {
       return await this.taskService.updateTaskById(params.id, body)
-    } catch (err) {
+    } catch (err: any) {
       return resp.status(HttpStatus.BAD_REQUEST).json({
         error: 'Data not found'
       })
     }
   }
+
+  @Delete('/:id')
+  async deleteTaskById(@Param() params: GetTaskParams<string>, @Res() resp: Response) {
+    try {
+      const deletedTask = await this.taskService.deleteTaskById(params.id)
+      if (deletedTask.acknowledged) return resp.status(200).json({
+        message: `Task ${params.id} deleted`
+      })
+      throw Error('Task not deleted')
+    } catch (err: any) {
+      return resp.status(HttpStatus.BAD_REQUEST).json({
+        error: err.message || 'Data not found'
+      })
+    }
+  }
+
+
 }
 

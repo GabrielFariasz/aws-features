@@ -7,7 +7,6 @@ export class HealthCheckController {
   }
 
   @Get('/healthCheck')
-  @HttpCode(200)
   getHealthCheck(): object {
     return {
       status: 'Service running properly =)',
